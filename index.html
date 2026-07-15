@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDLY</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Wordly Dictionary</h1>
+        <p>Search For Any English Word Here</p>
+    </header>
+    <main>
+        <section class="Search-Section">
+            <form id="search-form">
+                <label for="word-input">
+                    Search Word
+                </label>
+            </form>
+            <div id="Loading"></div>
+            <div id="Error" role="alert"></div>
+        </section>
+        <section id="results">
+            <h2 id="word"></h2>
+            <p id="phonetic"></p>
+            <div id="audio"></div>
+            <div id="meanings"></div>
+            <div id="source"></div>
+            <button id="favorite-btn">Save Word</button>
+            <!-- Favorites Section -->
+        <section id="favorites">
+            <h2>Favorite Words</h2>
+            <div id="favorites-list">
+                <p>No favorite words saved yet.</p>
+            </div>
+        </section>
+        </section>
+    </main>
+    <input
+    type="text"
+    id="word-input"
+    name="word"
+    placeholder="Enter a word..."
+    autocomplete="off"
+    required
+ >
+ <button type="submit">Search</button>
+    
+</body>
+</html>
