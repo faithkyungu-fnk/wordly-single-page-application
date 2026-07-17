@@ -47,6 +47,7 @@ function displayWord(entry) {
     //pronunciation
 
     phonetic.textContent = entry.phonetic || "No pronunciation available";
+
     //audio
     audio.innerHTML = "";
 
@@ -54,30 +55,89 @@ function displayWord(entry) {
     if (audioFile) {
         audio.innerHTML = `
             <audio controls>
-                <source src="${audioFile.audio}" type="audio/mpeg">
-            </audio>
-        `;
+                <source src="${audioFile.audio}" type="audio/mpeg"></audio>`;
     }
 
-    //meanings
+
+    // meanings
     meanings.innerHTML = "";
+
     entry.meanings.forEach((meaning) => {
         const heading = document.createElement("h3");
         heading.textContent = meaning.partOfSpeech;
-
         meanings.appendChild(heading);
 
         meaning.definitions.forEach((definition) => {
+            const definitionText = document.createElement("p");
+            definitionText.textContent = definition.definition;
+            meanings.appendChild(definitionText);
+        });
+    });
+    //examples
+    const exampleContainer = document.getElementById("example");
+    exampleContainer.innerHTML = "";
 
-            const p = document.createElement("p");
-            p.textContent = "." + definition.definition;
-            meanings.appendChild(p);
-        })
+    let hasExample = false;
 
-    })
+    entry.meanings.forEach((meaning) => {
+        meaning.definitions.forEach((definition) => {
+            if (definition.example) {
+                if (!hasExample) {
+                    const heading = document.createElement("h3");
+                    heading.textContent = "Example";
+                    exampleContainer.appendChild(heading);
+                    hasExample = true;
+                }
 
+                const example = document.createElement("p");
+                example.textContent = definition.example;
+                exampleContainer.appendChild(example);
+            }
+        });
+    });
 
+    //synonyms
+    const synonymsContainer = document.getElementById("synonyms");
+    synonymsContainer.innerHTML = "";
 
+    const synonyms = [];
+
+    entry.meanings.forEach((meaning) => {
+
+        // Meaning-level synonyms
+        if (meaning.synonyms) {
+            synonyms.push(...meaning.synonyms);
+        }
+
+        // Definition-level synonyms
+        meaning.definitions.forEach((definition) => {
+            if (definition.synonyms) {
+                synonyms.push(...definition.synonyms);
+            }
+        });
+    });
+
+    // Remove duplicates
+    const uniqueSynonyms = [...new Set(synonyms)];
+
+    if (uniqueSynonyms.length > 0) {
+
+        const heading = document.createElement("h3");
+        heading.textContent = "Synonyms";
+        synonymsContainer.appendChild(heading);
+
+        uniqueSynonyms.forEach((synonym) => {
+            const button = document.createElement("button");
+            button.textContent = synonym;
+
+            button.onclick = function () {
+                wordInput.value = synonym;
+                fetchWord(synonym);
+            };
+
+            synonymsContainer.appendChild(button);
+        });
+    }
 
     //source
     if (entry.sourceUrls && entry.sourceUrls.length > 0) {
@@ -98,7 +158,7 @@ function displayWord(entry) {
     }
 }
 function getFavorites() {
-    return JSON.parse(localStorage.getItem("favorites"))
+    return JSON.parse(localStorage.getItem("favorites"))// Favorites array is added to local storage
         || [];
 }
 function saveFavorite(entry) {
@@ -126,13 +186,11 @@ function displayFavorites() {
     }
     favoriteWords.forEach(item => {
         const div = document.createElement("div");
-        div.innerHTML = `<strong>${item.word}</strong
-    <button onclick = "removeFavorite('${ item.word }')">
-    Remove</button>
-    `;
-    favorites.appendChild(div);
+        div.innerHTML = `<strong>${item.word}</strong>
+    <button onclick = "removeFavorite('${item.word}')">Remove</button>`;
+        favorites.appendChild(div);
 
-});
+    });
 }
 
 
