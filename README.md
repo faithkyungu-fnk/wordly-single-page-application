@@ -14,7 +14,7 @@ Wordly Dictionary is a web application that allows users to search for English w
 - Listen to audio pronunciation
 - View synonyms
 - Save favorite words
-- Light and Dark mode
+
 
 
 //TECHNOLOGY USED
